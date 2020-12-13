@@ -1,23 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import { IoMdCloseCircle } from "react-icons/io";
+import "./App.css";
+
+
+
+
+
+
 
 function App() {
+
+    const [valorInput, setValorInput] = useState("")
+
+    const [ toDo, setToDo] = useState([])
+
+    function pegarInput(e){
+      let valor = e.target.value
+      setValorInput(valor)
+      console.log(valor)
+    }
+
+    function adicionarTarefa() {
+      setToDo([...toDo, valorInput])
+
+      setValorInput("");
+    }
+
+    function deletarTarefa(indexRemover) {
+      let novo = toDo.filter((item, index)=>{
+          return index !== indexRemover
+      })
+
+      setToDo(novo)
+    }
+   
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="to-do">
+      <h1>TO DO</h1>
+      <div className="body">
+        <input value={valorInput} type="text" id="tarefa" onChange={pegarInput} placeholder="Digite à Tarefa"/>
+        <button onClick={adicionarTarefa}>Adicionar</button>
+      </div> 
+      
+      <ol className="lista">
+        {toDo.map((item, index) => {
+          return (            
+            <li className="itens" key={index}>
+              {item}
+              <button className="button-deletar" onClick={() => deletarTarefa(index)}>
+              <IoMdCloseCircle/>
+              </button>
+            </li>
+          )})
+        }          
+      </ol>
+      
+
     </div>
   );
 }
